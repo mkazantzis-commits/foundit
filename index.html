@@ -184,6 +184,11 @@ button:active,.player:active,.bookPull:active,.packChip:active,.packTile:active,
 @media(prefers-reduced-motion:reduce){.motionArt{animation-duration:12s}}
 
 .game>.topUI,.game>.deck,.game>.camera,.game>.gesture{position:absolute}
+/* Clip every animated foil layer to the physical card silhouette, including iOS 3D compositing. */
+.card{overflow:visible}
+.cardShell,.face.front{border-radius:26px;overflow:hidden;clip-path:inset(0 round 26px);-webkit-clip-path:inset(0 round 26px);contain:paint}
+.cardShine{inset:0;border-radius:inherit;overflow:hidden;clip-path:inset(0 round 23px);-webkit-clip-path:inset(0 round 23px)}
+.card.rare:after,.card.legendary:after{display:none!important}
 /* Real mobile viewport hardening: fit browser-chrome-shortened screens without scaling overflow. */
 html,body,.game{height:100%;height:100svh;height:100dvh;max-height:100dvh}
 .game{width:100vw;max-width:100vw}
