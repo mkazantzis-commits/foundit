@@ -1,0 +1,60 @@
+=== ART() PILOT SPECIAL CASES ===
+if(!src&&i===48)return '<span class="layeredArt pilotBird"><img class="layerBase" src="'+PILOT_LAYERS.birdbase+'"><img class="birdBody" src="'+PILOT_LAYERS.birdbody+'"><img class="birdWing" src="'+PILOT_LAYERS.birdwing+'"><img class="birdTail" src="'+PILOT_LAYERS.birdtail+'"></span>';if(!src&&i===10)return '<span class="layeredArt pilotPlant"><img class="layerBase" src="'+PILOT_LAYERS.plantbase+'"><img class="plantLeaves" src="'+PILOT_LAYERS.plantleaves+'"><img class="plantStem stem1" src="'+PILOT_LAYERS.plantstem1+'"><img class="plantStem stem2" src="'+PILOT_LAYERS.plantstem2+'"><img class="plantStem stem3" src="'+PILOT_LAYERS.plantstem3+'"></span>';if(!src&&i===18)return '<span class="layeredArt pilotPine"><img class="layerBase" src="'+PILOT_LAYERS.pinebase+'"><img class="pineTwig" src="'+PILOT_LAYERS.pinetwig+'"><img class="pineNeedles" src="'+PILOT_LAYERS.pineneedles+'"></span>';let kind=species[i].art||'leaf',dur=(3.8+(i%7)*.38).toFixed(2),delay=(-(i%11)*.43).toFixed(2);return '<img class="motionArt motion-'+kind+'" style="--motion-d:'+dur+'s;--motion-delay:'+delay+'s" src="'+(src||ART_IMAGES[i])+'" alt="'+species[i].name+'">'}
+function render(){let o=species[current],f=book()[current],d=dailyIndex(),isDaily=bonus&&current===d.index,rar=rarityOf(current),tier=tierFor(current);$('#deck').querySelectorAll('.card').forEach(x=>x.remove());let c=document.createElement('article'
+
+=== PILOT KEYFRAMES ===
+@keyframes pilotWing{0%{transform:rotate(-2deg) scaleY(.92)!important}100%{transform:rotate(5deg) scaleY(1.045)!important}}
+@keyframes pilotTail{0%{transform:rotate(-2deg)!important}100%{transform:rotate(3deg)!important}}
+@keyframes pilotStem{0%{transform:rotate(-2.2deg)!important}100%{transform:rotate(2.8deg)!important}}
+.layeredArt .pineTwig{z-index:1}.layeredArt .pineNeedles{z-index:2;transform-origin:42% 67%!important;animation:pilotPine 2.6s ease-in-out infinite alternate}
+@keyframes pilotPine{0%{transform:rotate(-1.2deg)!important}100%{transform:rotate(1.8deg)!important}}
+/* Clip every animated foil layer to the physical card silhouette, including iOS 3D compositing. */
+.card{overflow:visible}
+.cardShell,.face.front{border-radius:26px;overflow:hidden;clip-path:inset(0 round 26px);-webkit-clip-path:inset(0 round 26px);contain:paint}
+.cardShine{inset:0;border-radius:inherit;overflow:hidden;clip-path:inset(0 round 23px);-webkit-clip-path:inset(0 round 23px)}
+.card.rare:after,.card.legendary:after{display:none!important}
+/* Real mobile viewport hardening: fit browser-chrome-shortened screens without scaling overflow. */
+html,body,.game{height:100%;height:100svh;height:100dvh;max-height:100dvh}
+.game{width:100vw;max-width:100vw}
+.card{width:min(82vw,354px);height:min(68dvh,650px);max-height:calc(100dvh - 170px);top:52%;}
+.card .name{font-size:clamp(21px,7vw,34px);line-height:.9}
+.rarityTag{bottom:clamp(76px,14dvh,104px)}
+@media(max-height:760px){
+ .topUI{top:max(8px,env(safe-area-inset-top));left:10px;right:10px}
+ .topUI .mark{transform:scale(.72);transform-origin:left top}
+ .awardOrb{right:54px;top:max(10px,env(safe-area-inset-top));width:40px;height:40px;font-size:18px}
+ .score b{font-size:17px}
+ .dailyOrb{width:38px;height:38px;font-size:18px}
+ .card{width:min(76vw,320px);height:min(66dvh,520px);max-height:calc(100dvh - 150px);top:52%}
+ .card .name{font-size:clamp(20px,6.8vw,29px)}
+ .camera{width:52px;height:52px;font-size:24px;right:12px;bottom:max(44px,calc(env(safe-area-inset-bottom) + 38px))}
+ .gesture{height:38px;bottom:max(5px,env(safe-area-inset-bottom))}
+ .rarityTag{bottom:76px}
+ .bookTop{min-height:78px;padding:max(12px,env(safe-area-inset-top)) 12px 9px}
+ .bookTop h1{font-size:28px}
+ .switch{margin:7px 10px}
+ .packShelf{padding:5px 10px 7px}
+ .setStrip{margin:5px 10px}
+ .grid{padding:7px 10px max(18px,env(safe-area-inset-bottom));gap:8px}
+ .awardsTop{height:82px;padding:max(12px,env(safe-area-inset-top)) 12px 9px}
+ .awardsTop h1{font-size:27px}
+ .awardGrid{gap:8px;padding:9px 10px max(18px,env(safe-area-inset-bottom))}
+ .questOverlay{padding:12px}
+ .questOverlay .panel{max-height:calc(100dvh - 24px);overflow:auto;padding:16px 14px}
+ .questOverlay .questBolt{font-size:45px}
+ .questOverlay h2{font-size:24px;margin:6px 0 4px}
+ .questSteps{margin:10px 0}
+}
+
+=== LAYERED CSS ===
+.layeredArt{position:absolute;inset:0;display:block;overflow:hidden}
+.layeredArt>img,.slotArt>.layeredArt>img,.backArt>.layeredArt>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:none!important;mix-blend-mode:multiply;filter:saturate(.95) contrast(1.06);transform-origin:center}
+.layeredArt .layerBase{z-index:0}
+.layeredArt .birdBody,.layeredArt .plantLeaves{z-index:1}
+.layeredArt .birdWing{z-index:3;transform-origin:43% 53%!important;animation:pilotWing .62s ease-in-out infinite alternate}
+.layeredArt .birdTail{z-index:4;transform-origin:42% 62%!important;animation:pilotTail 1.25s ease-in-out infinite alternate}
+.layeredArt .plantStem{z-index:3;transform-origin:50% 72%!important;animation:pilotStem 2.4s ease-in-out infinite alternate}
+.layeredArt .stem2{animation-delay:-.8s;animation-duration:2.8s}
+.layeredArt .stem3{animation-delay:-1.4s;animation-duration:2.1s}
+.layeredArt .pineTwig{z-index:1}
+.layeredArt .pineNeedles{z-index:2;transform-origin:42% 67%!important;animation:pilotPine 2.6s ease-in-out infinite alternate}
