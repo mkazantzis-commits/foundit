@@ -198,6 +198,9 @@ button:active,.player:active,.bookPull:active,.packChip:active,.packTile:active,
 @keyframes pilotStem{0%{transform:rotate(-2.2deg)!important}100%{transform:rotate(2.8deg)!important}}
 .layeredArt .pineTwig{z-index:1}.layeredArt .pineNeedles{z-index:2;transform-origin:42% 67%!important;animation:pilotPine 2.6s ease-in-out infinite alternate}
 @keyframes pilotPine{0%{transform:rotate(-1.2deg)!important}100%{transform:rotate(1.8deg)!important}}
+
+/* High-resolution pilot layers use true alpha and should render at full color. */
+.artPlate>.layeredArt>img,.slotArt>.layeredArt>img,.backArt>.layeredArt>img{mix-blend-mode:normal;filter:none}
 /* Clip every animated foil layer to the physical card silhouette, including iOS 3D compositing. */
 .card{overflow:visible}
 .cardShell,.face.front{border-radius:26px;overflow:hidden;clip-path:inset(0 round 26px);-webkit-clip-path:inset(0 round 26px);contain:paint}
